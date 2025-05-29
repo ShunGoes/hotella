@@ -1,5 +1,5 @@
 import Settings from "@/models/settings";
-import User, { UserType } from "@/models/user";
+import User from "@/models/user";
 import conn from "./db";
 
 export const getExistingUser = async (email: string) => {
@@ -74,7 +74,7 @@ export const addAndRemoveAdminEmail = async (email: string, action: string) => {
     }
 
     // >>>>>>>>>>>>>>>>>>> UPDATE USER ROLE <<<<<<<<<<<<<<<<
-    let user = await User.findOne({ email });
+    const user = await User.findOne({ email });
 
     if (!user) {
       console.log("user not found");
@@ -115,31 +115,7 @@ export const addAndRemoveAdminEmail = async (email: string, action: string) => {
   }
 };
 
-/**
- * THIS FUNCTION FINDS USERS BY THEIR DB ID
- */
-// export const getUserById = async (id: string): Promise<UserType | null> => {
-//   try {
-//     await conn();
-//     const user = await User.findOne({ _id: id.toString() }).lean();
-//     console.log(user)
 
-//     if (!user) {
-//       console.log("no user with such ID found");
-//       return null;
-//     }
-
-//     return user;
-    
-//   } catch (error) {
-//     console.log(error);
-//     return null;
-//   }
-// };
-
-/**
- * THIS FUNCTION  FINDS USERS BY THEIR DB EMAIL
- */
 export const getUserByEmail = async (email: string) => {
   try {
     const user = await User.findOne({ email });
