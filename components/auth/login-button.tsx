@@ -8,7 +8,7 @@ interface LoginBtnProps {
   asChild?: boolean;
 }
 
-const LoginBtn = ({ children, mode = "redirect", asChild }: LoginBtnProps) => {
+const LoginBtn = ({ children, mode = "redirect"}: LoginBtnProps) => {
     const router = useRouter()
 
   const onClick = () => {

@@ -7,7 +7,6 @@ const SettingsPage = async () => {
   const {name, image, role, emailVerified, provider,email } = sessions?.user || {}
   return (
     <div>
-      {/* {JSON.stringify(sessions)} */}
       <form
         action={async () => {
           "use server";
@@ -31,7 +30,7 @@ const SettingsPage = async () => {
       <form
         action={async () => {
           "use server";
-          await addAndRemoveAdminEmail(sessions?.user?.email!, "add")
+          await addAndRemoveAdminEmail(sessions?.user?.email ?? "", "add")
         }}
       >
         <button type="submit">Add Admin</button>
