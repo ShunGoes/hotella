@@ -1,6 +1,6 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { useState, useTransition } from "react";
+import { startTransition, useState, useTransition } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -11,27 +11,24 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-import { LoginSchema } from "@/schemas";
+import { LoginSchema } from "@/zod-schemas";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import FormError from "../form-error";
 import FormSuccess from "../form-success";
-import { loginAction } from "@/actions/login";
+// import { loginAction } from "@/actions/login";
 import { useRouter } from "next/navigation";
-
-interface FormSTateProps {
-  success: string;
-  error: string;
-}
+import { loginAction } from "@/actions/login";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 const LoginForm = () => {
-  const [formState, setFormState] = useState<FormSTateProps>({
-    success: "",
-    error: "",
-  });
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransaction] = useTransition();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const orlError = searchParams.get("error") === "OAuthAccountNotLinked" ? "Email already in use with another provider" : ""
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -42,35 +39,13 @@ const LoginForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    setFormState({
-      success: "",
-      error: "",
-    });
+    setError("");
+    setSuccess("");
 
-    // console.log(values)
-    startTransaction(async () => {
-      const response = await loginAction(values);
-
-      console.log(response);
-      if (!response?.success) {
-        setFormState((prevState) => {
-          return {
-            ...prevState,
-            error: response?.error ?? "",
-          };
-        });
-        return;
-      }
-
-      console.log("successfully logged in ");
-      setFormState((prevState) => {
-        return {
-          ...prevState,
-          success: response?.success ?? "",
-        };
-      });
-
-      router.push("/settings");
+    startTransition(async () => {
+      const data = await loginAction(values);
+      setError(data.error);
+      setSuccess(data.success);
     });
   };
 
@@ -110,13 +85,18 @@ const LoginForm = () => {
                     type="password"
                   />
                 </FormControl>
+                <Button size="sm" variant="link" asChild className="px-0  font-normal">
+                  <Link className=" " href="/auth/reset">
+                  Forgot Password
+                  </Link>
+                </Button>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
-        <FormError message={formState.error} />
-        <FormSuccess message={formState.success} />
+        <FormError message={error || orlError} />
+        <FormSuccess message={success} />
         <Button className="w-full" type="submit">
           Login
         </Button>

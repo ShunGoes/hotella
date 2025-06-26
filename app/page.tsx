@@ -10,17 +10,17 @@ const font = Poppins({
 
 export default function Home() {
   return (
-    <main className="h-full flex flex-col items-center justify-center bg-sky-500">
-      <div className="space-y-2 text-center">
+    <main className="h-full flex flex-col items-center justify-center ">
+      <div className="space-y-6 text-center mb-4">
         <h1
           className={cn(
-            "text-6xl font-semibold text-white drop-shadow-md",
+            "text-6xl font-semibold text-black drop-shadow-md",
             font.className
           )}
         >
-          Auth
+          My Nanny
         </h1>
-        <p className="text-white text-lg">A simple authentication service</p>
+        <p className="text-black text-lg">Connect to nannies in your locale</p>
       </div>
       <LoginBtn mode="redirect">
         <Button variant="secondary" size="lg">

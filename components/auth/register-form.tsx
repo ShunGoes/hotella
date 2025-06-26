@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { RegisterSChema } from "@/schemas";
+import { RegisterSChema } from "@/zod-schemas";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import FormError from "../form-error";
