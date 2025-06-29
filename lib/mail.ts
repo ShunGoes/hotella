@@ -26,7 +26,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
   }
 };
 
-
+// SEND PASSWORD RESET EMAIL
 export const sendPasswordResetEmail = async (email: string, token: string) => {
   const resetLink = `http://localhost:3000/auth/new-password?token=${token}`
 
@@ -49,3 +49,18 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
   }
 };
 
+// SEND TWO FACTOR CODE
+export const sendTwoFactorEmail = async (email: string, token: string) => {
+  try {
+    await resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: email,
+      subject: "Two Factor Authentication Code",
+      html: `<p> Here is your 2FA code: <strong>${token}</strong> </p>`,
+    });
+  } catch (error) {
+    console.error("Failed to send 2FA code:", error);
+    throw error;
+  }
+
+}

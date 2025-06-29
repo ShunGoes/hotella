@@ -1,12 +1,11 @@
-import CardWrapper from "@/components/auth/card-wrapper"
-import LoginForm from "@/components/auth/loginForm"
+import LoginForm from "@/components/auth/loginForm";
 
 const LoginPage = () => {
   return (
-    <CardWrapper headerLabel="Welcome back" backButtonLabel="Don't have an account?" backButtonRef="/auth/register" showSocial={true}>
-        <LoginForm />
-    </CardWrapper>
-  )
-}
+  
+      <LoginForm />
+    
+  );
+};
 
-export default LoginPage
+export default LoginPage;
